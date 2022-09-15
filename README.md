@@ -1,5 +1,5 @@
 # Glimpse
-## Version Dev-Release_1.0
+## Version Dev_Release_v1.0
 Glimpse is a simple lightweight MacOS, Windows, and Linux network auditing platform.
 # Setup
 ## install
