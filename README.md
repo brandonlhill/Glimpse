@@ -255,9 +255,7 @@ $ screen -r
 ----------------------------------------------------------------------
 ```
 
-### Note that you can screen of the tasks with the following command:
-
-
+### Note that you can run the GlimpseServerScript.py and the glimpse.py as Linux Services to ensure they stay running on reboot.
 
 ## Authors
 - [@brandonlhill](https://www.github.com/brandonlhill) the person who did all the work.
