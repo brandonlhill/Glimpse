@@ -27,11 +27,11 @@ A list of technologies used within the project:
 Install the Following Packages (Ubuntu 20.04):
 Offical Installation Guide: https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-ubuntu/
 
-#### Installing SQL-Server (ubuntu)
+#### Install SQL-Server (ubuntu)
 ```bash
 $ sudo apt install mysql-server
 ```
-#### Intalling MongoDB
+#### Install MongoDB
 ``` bash 
 # Import mongodb public key:
 $ sudo apt-get install gnupg
@@ -43,7 +43,7 @@ $ sudo apt-get update
 # Install MongoDB and Mongo Shell (for config)
 $ sudo apt instlal mongodb-mongosh mongodb-ord 
 ``` 
-#### Installing Python Packages
+#### Install Python Packages
 ```bash 
 # Python3.10 install & required dev packages
 $ sudo apt install python3 python3-pip python-pip python-dev libmysqlclient-dev
