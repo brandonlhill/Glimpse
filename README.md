@@ -87,7 +87,7 @@ mysql> exit;
 *Bye*
 ```
 
-The following commands created a database "accounts" with a table "user" define with 3 columns (username, password, access).
+The following commands created a database "accounts" with a table "user" with 3 columns (username, password, access).
 Some helpful links to read for debugging:
 * (SQL Views) https://www.w3schools.com/SQL/sql_view.asp
 * (SQL INSERT INTO Statement) https://www.w3schools.com/sql/sql_insert.asp
