@@ -257,7 +257,7 @@ $ screen -r
 ### Note that you can run the GlimpseServerScript.py and the glimpse.py as Linux Services to ensure they stay running on reboot.
 
 ## Authors
-- [@brandonlhill](https://www.github.com/brandonlhill) the person who did all the work.
+- [@brandonlhill](https://www.github.com/brandonlhill) 
 
 # Notice
 This is a school project designed to mock real developement that may occur in industry. 
