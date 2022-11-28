@@ -24,14 +24,13 @@ A list of technologies used within the project:
 * [MySQL](https://ubuntu.com/server/docs/databases-mysql): 8.0.31-0ubuntu0.22.04.1 (Ubuntu) (other versions can be used)
 
 ## Installation
-Install the Following Packages (Ubuntu 20.04):
-Offical Installation Guide: https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-ubuntu/
 
 #### Install SQL-Server (ubuntu)
 ```bash
 $ sudo apt install mysql-server
 ```
 #### Install MongoDB
+Offical Installation Guide: https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-ubuntu/
 ``` bash 
 # Import mongodb public key:
 $ sudo apt-get install gnupg
