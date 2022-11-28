@@ -1,3 +1,500 @@
-<html>
-	<h1>Demo code</h1>
-</html> 
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Glimpse Home</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+  </head>
+   <!-- Content Section (BODY) -->
+  <body>
+    <!-- Navbar Core -->
+    <nav class="navbar navbar-dark bg-dark fixed-top">
+      <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <!-- Navbar Title -->
+        <a class="navbar-brand active" href="/home">Glimpse</a>
+        <!-- Navbar Logout -->
+        <li class="nav-item">
+          <a class="nav-link" style="color:white !important; " href="/logout"> Logout 
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0v2z"/>
+            <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"/>
+            </svg>
+          </a>
+        </li>
+        <!-- Side Navbar -->
+        <div class="offcanvas offcanvas-start text-bg-dark" tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">Glimpse Toolbar</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="/home">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/settings">Settings</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/register">Add User</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/removeuser">Remove User</a>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Server List
+                </a>
+                <!-- Server List -->
+                <ul class="dropdown-menu dropdown-menu-dark">
+                  <li><a class="dropdown-item" onClick="update_serverlist()" href="#">Refresh Servers</a></li>
+                  <li>
+                    <hr class="dropdown-divider">
+                  </li>
+                  <!-- Server list to be appended to. -->
+                  <div id="serverlist">
+                  </div>
+                </ul>
+              </li>
+            </ul>
+            <form class="d-flex mt-3" role="search">
+              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+              <button class="btn btn-success" type="submit">Search</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Content Section -->
+    <div class="container" style="width: 80%; padding-top: 80px;">
+      <div id="content">
+
+      </div>
+    </div>
+
+    <script>
+      // global variables
+      doRenderInv = undefined;
+      var time =  0;
+      var graph_data = [];
+      
+      // html update functions
+      insert_main();
+      update_serverlist();
+      
+      // render charts in HTML ID:content
+      function insert_main(){
+        // empty body
+        $("#content").empty();
+        // render main page content
+        $("#content").html('<div class="row"><div class="col-xs-8"><h1 class="center">Welcome to <p class="colorama">GLIMPSE</p></h1><p class="center">Glimpse is a simple lightweight MacOS, Windows, and Linux network auditing platform.</p><h2>Documentation & Help</h2><p>Glimpse requires a Mongodb service, SQL-lite Server, and for the config files to be defined correct.</p><p>All of the following items above can be installed and setup correctly via the instructions on the Glimpse Core github Public page.</p><h2>Update Glimpse Today!</h2><p>You can install the latest version of the Glimpse code base via: <a href="https://github.com/brandonlhill"> https://github.com/brandonlhill</a>.</p></div></div>');
+      }
+      
+      // render charts in HTML ID:content
+      function insert_stat_layout(IP_Address){
+        // empty body
+        $("#content").empty();
+        
+        // render charts content
+        $("#content").html('<div class="row">\
+                      <div class="col-6 info"><canvas id="CPU"></canvas></div>\
+                      <div class="col-6 info"><canvas id="RAM"></canvas></div>\
+                      </div>\
+                      <div class="row">\
+                          <div class="col-6 info"><canvas id="Internet"></canvas></div>\
+                          <div class="col-6 info"><canvas id="Temp"></canvas></div>\
+                      </div>\
+                      <div class="row">\
+                        <h2>Server Info</h2>\
+                        <div class="col-3 info" id="host"></div>\
+                        <div class="col-3 info" id="hostname"></div>\
+                        <div class="col-3 info" id="system"></div>\
+                      </div>\
+                      <div class="row">\
+                        <div class="col-3 info" id="node"></div>\
+                        <div class="col-3 info" id="release"></div>\
+                        <div class="col-3 info" id="version"></div>\
+                        <div class="col-3 info" id="machine"></div>\
+                      </div>\
+                      <div class="row">\
+                        <div class="col-3 info" id="processor"></div>\
+                        <div class="col-3 info" id="max_freq"></div>\
+                      </div>\
+                      <div class="row">\
+                        <div class="col-3 info" id="host"></div>\
+                        <div class="col-3 info" id="hostname"></div>\
+                        <div class="col-3 info" id="max_freq" class="col-3"></div>\
+                        <div class="col-3 info" id=""></div>\
+                      </div>\
+                      <div class="row">\
+                        <h2>CPU</h2>\
+                        <div class="col-3 info" id="cur_freq"></div>\
+                        <div class="col-3 info" id="p_cores"></div>\
+                        <div class="col-3 info" id="t_cores"></div>\
+                        <div class="col-3 info" id="usage"></div>\
+                      </div>\
+                      <div class="row">\
+                        <h2>Memory</h2>\
+                        <div class="col-3 info" id="mem_percent"></div>\
+                        <div class="col-3 info" id="mem_total"></div>\
+                        <div class="col-3 info" id="mem_used"></div>\
+                        <div class="col-3 info" id=""></div>\
+                      </div>\
+                      <div class="row">\
+                        <h2>Swap</h2>\
+                        <div class="col-3 info" id="swap_percent"></div>\
+                        <div class="col-3 info" id="swap_total"></div>\
+                        <div class="col-3 info" id="swap_used"></div>\
+                        <div class="col-3 info" id=""></div>\
+                      </div>\
+                      <div class="row">\
+                        <h2>Networking</h2>\
+                        <div class="col-3 info" id="network_sent"></div>\
+                        <div class="col-3 info" id="network_recv"></div>\
+                        <div class="col-3 info" id=""></div>\
+                      </div>\
+                      <div class="row">\
+                        <h2>Disk</h2>\
+                        <div class="col-3 info" id="disk_total"></div>\
+                        <div class="col-3 info" id="disk_free"></div>\
+                        <div class="col-3 info" id="disk_used"></div>\
+                        <div class="col-3 info"></div>\
+                      </div>\
+                      <div class="row">\
+                        <h2>Uptime</h2>\
+                        <div class="col-3 info" id="uptime"></div>\
+                      </div>\
+                      <button onClick="deleteServer(\''+IP_Address+'\')">Delete Server</button>')
+      }
+
+      function deleteServer(IP_Address){
+        // stop requests for deleted server
+        if(doRenderInv != undefined){
+          clearInterval(doRenderInv);
+        } 
+
+        $.ajax({
+          url: "/clear",
+          type: 'POST',
+          dataType: 'json',
+          contentType: 'application/json;charset=UTF-8',
+          // NOTE:you need to JSON stringify before sending the data
+          data:JSON.stringify({ 
+            "clear":IP_Address
+          }),
+          success: function(res) {
+            insert_main(); // redraw main after clicking the button
+            update_serverlist(); // update server list
+            time = 0;
+            graph_data = [];
+            console.log("Deleted Server: " + IP_Address);
+          }
+          }).fail(function() {
+            console.log("[ERROR] Failed connection to /clear");
+          });
+        }
+
+      function render_server_stats(IP_Address){
+        console.log("[INFO] render_server_stats called.");
+        // draws html server report items
+        insert_stat_layout(IP_Address);
+        
+        // temp draw graphs
+        render_server_graphs(time,0,0,0,0);
+        time++;
+        if(doRenderInv != undefined){
+          clearInterval(doRenderInv);
+        } 
+        doRenderInv = setInterval(function() {write_server_stats(IP_Address); }, 1500)
+      }
+
+      function write_server_stats(IP_Address){
+        // request for a specific server
+        console.log("Rendering data for: " + IP_Address);
+
+        $.ajax({
+          url: "/get_server_info",
+          type: 'POST',
+          dataType: 'json',
+          contentType: 'application/json;charset=UTF-8',
+          // NOTE:you need to JSON stringify before sending the data
+          data:JSON.stringify({ 
+            "info":IP_Address
+          }),
+          success: function(res) {
+            // update body html and graphs
+            var data = JSON.parse(JSON.stringify(res));
+            // Host
+            document.getElementById("host").innerHTML = 'IP-Address: <p class="purple">' + data.IP + '</p>';
+            document.getElementById("hostname").innerHTML = 'Hostname: <p class="purple">' + data.hostname + '</p>';
+            document.getElementById("system").innerHTML = 'System: <p class="purple">' + data.specs.system + '</p>';
+            document.getElementById("node").innerHTML = 'Node: <p class="purple">' + data.specs.node + '</p>';
+            document.getElementById("release").innerHTML = 'OS Release: <p class="purple">' + data.specs.release + '</p>';
+            document.getElementById("version").innerHTML = 'OS Version: <p class="purple">' + data.specs.version + '</p>';
+            document.getElementById("machine").innerHTML = 'Machine: <p class="purple">' + data.specs.machine + '</p>';
+            document.getElementById("processor").innerHTML = 'Process: <p class="purple">' + data.specs.processor + '</p>';
+            // CPU
+            document.getElementById("max_freq").innerHTML = 'Maximum Frequency: <p class="purple">' + data.cpu.max_freq + '</p>';
+            document.getElementById("cur_freq").innerHTML = 'Current Frequency: <p class="purple">' + data.cpu.cur_freq + '</p>';
+            document.getElementById("p_cores").innerHTML = 'Cores: <p class="purple">' + data.cpu.p_cores + '</p>';
+            document.getElementById("t_cores").innerHTML = 'Threads: <p class="purple">' + data.cpu.t_cores + '</p>';
+            document.getElementById("usage").innerHTML = 'Usage: <p class="purple">' + data.cpu.usage + '</p>';
+            // MEM
+            memory_percentage = (data.mem.used / data.mem.total) * 100;
+            document.getElementById("mem_percent").innerHTML = 'Memory Percentage: <p class="purple">' + memory_percentage + '</p>';
+            document.getElementById("mem_total").innerHTML = 'Total Memory: <p class="purple">' + data.mem.total + '</p>';
+            document.getElementById("mem_used").innerHTML = 'Used Memory: <p class="purple">' + data.mem.used + '</p>';
+            // SWAP
+            document.getElementById("swap_percent").innerHTML = 'Swap Percentage: <p class="purple">' + 'NONE' + '</p>';
+            document.getElementById("swap_total").innerHTML = 'Total Swap: <p class="purple">' + data.swap.total + '</p>';
+            document.getElementById("swap_used").innerHTML = 'Used Swap: <p class="purple">' + data.swap.used + '</p>';
+            // NETWORK
+            document.getElementById("network_sent").innerHTML = 'Data Sent: <p class="purple">' + data.network.sent + '</p>';
+            document.getElementById("network_recv").innerHTML = 'Data Recv: <p class="purple">' + data.network.recv + '</p>';
+            document.getElementById("disk_total").innerHTML = 'Total Space: <p class="purple">' + data.disk.total + '</p>';
+            // DISK
+            document.getElementById("disk_used").innerHTML = 'Space Used: <p class="purple">' + data.disk.used + '</p>';
+            document.getElementById("disk_free").innerHTML = 'Space Free: <p class="purple">' + data.disk.free + '</p>';
+            document.getElementById("uptime").innerHTML = 'System Uptime: <p class="purple">' + data.uptime + '</p>';
+
+            //{ time: 0, cUsage: 10, rUsage: 20, speed: 10, temp: 90 },
+            render_server_graphs(time,data.cpu.usage,memory_percentage,data.network.recv.slice(0, -2),0);
+            time++;
+          }
+          }).fail(function() {
+				    console.log("[ERROR] Failed connection to /get_server_info... HTML Frames wont render correctly.");
+			  });
+      }
+
+      function update_serverlist(){
+        // empty list
+        $('#serverlist').empty()
+
+        //append server list
+        $.support.cors = true;
+        $.ajax({
+          url: "/get_server_list",
+          type: 'GET',
+          dataType: 'json',
+          contentType:'application/json',
+          beforeSend: function (xhr) {
+              xhr.setRequestHeader ("Authorization", "Basic " + btoa(""));
+          },
+          success: function(res) {
+            //iterate through javascript object and append servers to drop down list
+            console.log("Got Servers:", String(res));
+            for (const key in res) {
+              var server = `${res[key]}`
+              $('#serverlist').append('<li><button type="button" class="dropdown-item" onclick="render_server_stats(\''+server+'\');">'+server+'</button></li>')
+            }
+          }
+        }).fail(function() {
+          $('#serverlist').append('<li><button class="dropdown-item">No Servers Available</button></li>')
+          console.log("[ERROR] Failed connection to /get_Server_list");
+        });
+      }
+
+      function render_server_graphs(reltime, cUsage, rUsage, speed, temp) {
+        console.log("[INFO] Updating graphs.")
+        //Chart.register(Chart.colors);
+        if (graph_data.length >= 10){
+          //remove the zeroth index (because it is the oldest time wise)
+          graph_data.splice(0,1);
+        }
+
+        graph_data.push({ 'time': reltime, 'cUsage': cUsage, 'rUsage': rUsage, 'speed': speed, 'temp': temp })
+        console.log(graph_data)
+        new Chart(
+          document.getElementById('CPU'),
+          {
+            type: 'line',
+            options: {
+              animation: false,
+              plugins: {
+                legend: {
+                  display: false
+                },
+                tooltip: {
+                  enabled: false
+                }
+              },
+              scales: {
+                x: {
+                  ticks: {
+                    display: false
+                  }
+                },
+                y: {
+                  min:0,
+                  max:100,
+                  ticks: {
+                    display: false
+                  }
+                }
+              }
+            },
+            data: {
+              labels: graph_data.map(row => row.time),
+              datasets: [
+                {
+                  fill: {
+                    target: 'origin',
+                    below: 'rgb(0,0,255)'
+                  },
+                  label: 'CPU Usage',
+                  data: graph_data.map(row => row.cUsage),
+                  pointRadius: 0,
+                  backgroundColor: '#2196F3'
+                }
+              ]
+            },});
+
+        new Chart(
+          document.getElementById('RAM'),
+          {
+            type: 'line',
+            options: {
+              animation: false,
+              plugins: {
+                legend: {
+                  display: false
+                },
+                tooltip: {
+                  enabled: false
+                }
+              },
+              scales: {
+                x: {
+                  ticks: {
+                    display: false
+                  }
+                },
+                y: {
+                  min:0,
+                  max:100,
+                  ticks: {
+                    display: false
+                  }
+                }
+              }
+            },
+            data: {
+              labels: graph_data.map(row => row.time),
+              datasets: [
+                {
+                  fill: {
+                    target: 'origin',
+                    below: 'rgb(0,0,255)'
+                  },
+                  label: 'RAM Usage',
+                  data: graph_data.map(row => row.rUsage),
+                  pointRadius: 0,
+                  backgroundColor: '#FF5722'
+                }
+              ]
+            },
+          }
+        );
+
+        new Chart(
+          document.getElementById('Internet'),
+          {
+            type: 'line',
+            options: {
+              animation: false,
+              plugins: {
+                legend: {
+                  display: false
+                },
+                tooltip: {
+                  enabled: false
+                }
+              },
+              scales: {
+                x: {
+                  ticks: {
+                    display: false
+                  }
+                },
+                y: {
+                  min:0,
+                  max:100,
+                  ticks: {
+                    display: false
+                  }
+                }
+              }
+            },
+            data: {
+              labels: graph_data.map(row => row.time),
+              datasets: [
+                {
+                  fill: {
+                    target: 'origin',
+                    below: 'rgb(0,0,255)'
+                  },
+                  label: 'Internet Bytes Recv',
+                  data: graph_data.map(row => row.speed),
+                  pointRadius: 0,
+                  backgroundColor: '#4CAF50'
+                }
+              ]
+            },
+          });
+
+        new Chart(
+          document.getElementById('Temp'),
+          {
+            type: 'line',
+            options: {
+              animation: false,
+              plugins: {
+                legend: {
+                  display: false
+                },
+                tooltip: {
+                  enabled: false
+                }
+              },
+              scales: {
+                x: {
+                  ticks: {
+                    display: false
+                  }
+                },
+                y: {
+                  min:0,
+                  max:100,
+                  ticks: {
+                    display: false
+                  }
+                }
+              }
+            },
+            data: {
+              labels: graph_data.map(row => row.time),
+              datasets: [
+                {
+                  fill: {
+                    target: 'origin',
+                    below: 'rgb(0,0,255)'
+                  },
+                  label: 'Temperature (disabled)',
+                  data: graph_data.map(row => row.temp),
+                  pointRadius: 0,
+                  backgroundColor: '#F44336'
+                }
+              ]
+            },
+          });}
+    </script>
+    <script src="main.js"></script>
+  </body>
+</html>

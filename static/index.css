@@ -1,0 +1,43 @@
+.colorama{
+    /* font-size: 72px; */
+    background: -webkit-linear-gradient(#6610f2, #3f56a9);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.center{
+    text-align:center;
+}
+.info{
+    font-size:20px;
+}
+.purple{
+    color:#6610f2;
+}
+html,body { height: 100%; }
+
+form{
+  padding-top: 10px;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+.card-title{ font-weight:300; }
+
+.btn{
+  font-size: 14px;
+  margin-top:20px;
+}
+
+.login-form{ 
+  width:320px;
+  margin:0 auto;
+}
+
+.sign-up{
+  text-align:center;
+  padding:20px 0 0;
+}
+
+span{
+  font-size:14px;
+}

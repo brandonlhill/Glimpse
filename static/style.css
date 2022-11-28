@@ -1,0 +1,22 @@
+.form-group {
+    text-align: left;
+}
+.login-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 500px;
+    width: 100%;
+} 
+form {
+    border-style: solid;
+    border-color: black;
+    border-width: 1;
+    padding-top:40px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 30px;
+}
+.center{
+    text-align:center;
+}
