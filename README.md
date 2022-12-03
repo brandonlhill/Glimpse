@@ -13,7 +13,9 @@ Glimpse is a simple python based Linux server auditing platform. Built by a UMBC
 9. [Notice](#notice)
 
 ## General Info
-This project was developed to sharpen software developement techniques. I do not recommend using Glimpse in a production environment. Furthermore, if youre just interested in learning about: flask proxy servers, flask threading, flask (cookie) based sessions, Pymongo, PySQL, etc. then this is the project for you.
+This project was created to sharpen software developement techniques. I do not recommend using Glimpse in a production environment. Furthermore, if you're just interested in learning about: flask proxy servers, flask threading, flask (cookie) based sessions, Pymongo, PySQL, etc. then this is the project for you.
+
+If deployed in a production environment it's advised to use a reverse proxy server for FLASK. 
 
 Note: Bug fixes and general improvements are encouraged. So please do submit push/merge requests!
 
@@ -56,9 +58,9 @@ $ python3 -m pip install shutil
 
 ## Configuration
 ### Glimpse Server Script on Remote Host (GSS)
-The Glimpse Server Script is a script that is to be installed on a server that you wish to monitor via Glimpse.
-This script communciates to the Glimpse Host via a configured API_KEY.
-The Glimpse Server Script requires you to fill out some conf options to allow it to communicate to the Host Glimpse Server.
+The GSS is a remote server script responsible for sending server data to the Glimpse Host.
+This script communciates to the Glimpse Host via a config defined API_KEY.
+The Glimpse Server Script requires you to fill out some config options, allowing it to communicate with Glimpse Server.
 
 ### Glimpse Host
 Follow for more specific instructions here: (cross reference to this documentation to ensure you configure the database correctly)
@@ -87,7 +89,7 @@ mysql> exit;
 *Bye*
 ```
 
-The following commands created a database "accounts" with a table "user" with 3 columns (username, password, access).
+The following commands creates a database named "accounts" with a table named "user" having 3 columns (username, password, access).
 Some helpful links to read for debugging:
 * (SQL Views) https://www.w3schools.com/SQL/sql_view.asp
 * (SQL INSERT INTO Statement) https://www.w3schools.com/sql/sql_insert.asp
@@ -107,16 +109,16 @@ Some helpful links to read for debugging:
 
 ## Configure Firewall
 For the Glimpse Host (this is not needed for the Glimpse Server Script Host Machine)
-Read More Here about ubuntu Firewalls: https://ubuntu.com/server/docs/security-firewall
+For additional UFW info read: https://ubuntu.com/server/docs/security-firewall
 ```bash
 $ ufw allow 1443/tcp
 $ ufw allow 8443/tcp
 ```
 
 ## Glimpse API's
-This section covers all the POST/GET endpoints that Glimpse open the network.
+This section covers POST/GET endpoints that Glimpse opens to the network.
 ### User_API.py
-This API handles serves more as a webserver, but its considered an API because it should be behind a webserver "REVERSE PROXY".
+This API acts very similar to a webserver because it serves web content, as well as responding to POST/GET requests.
 Read More about reverse proxies here: https://www.nginx.com/resources/glossary/reverse-proxy-server/. 
 #### User_API Request Reference
 ```http
@@ -153,9 +155,7 @@ Read More about reverse proxies here: https://www.nginx.com/resources/glossary/r
 
 
 ### Data_API.py
-The Data_API is where the Glimpse Server Script (GSS) pushes server data data for backend processing and storage. Note that all data is 
-encrpted using priviate certs and the payload of the data requires a API_KEY for the server to process the data.
-The API_Key is defined by the Glimpse admin during configuration into the GSS and into the Data_API config.
+The Data_API is where the Glimpse Server Script (GSS) pushes server data for backend processing and storage. This API enforces HTTPS and for every request to contain a API_KEY for security purposes. The API_Key is defined by the Glimpse admin during the configuration steps (api_key in the config.ini file)
 
 #### Data_API Request Reference
 ```http
@@ -173,7 +173,7 @@ The API_Key is defined by the Glimpse admin during configuration into the GSS an
 | Parameter | Type     | Description                       |
 | :-------- | :------- | :-------------------------------- |
 | `API_KEY` | `string` | Required authentication           |
-| `logs`    | `string` | Appended Blob: {"IP":"...", "Timestamp":"...", "log_type":"ERROR,OK,WARN", "msg": "..."}|
+| `logs`    | `string` | JSON: {"IP":"...", "Timestamp":"...", "log_type":"ERROR,OK,WARN", "msg": "..."}|
 
 ```http
   GET :1443/get_servers_info
@@ -181,7 +181,7 @@ The API_Key is defined by the Glimpse admin during configuration into the GSS an
 | Parameter | Type     | Description                       |
 | :-------- | :------- | :-------------------------------- |
 | `API_KEY` | `string` | Required authentication           |
-| `request` | `string` | Request Blob types  {"info", "IP_ADDRESS"} or {"list_servers","all"}|
+| `request` | `string` | JSON Types:  {"info", "IP_ADDRESS"} or {"list_servers","all"}|
 
 ```http
   GET :1443/get_servers_logs
@@ -190,10 +190,9 @@ The API_Key is defined by the Glimpse admin during configuration into the GSS an
 | :-------- | :------- | :-------------------------------- |
 | `API_KEY` | `string` | Required authentication           |
 | `IP`      | `string` | Server IP to get Logs from        |
-| `get_logs`| `string` | Appended Blob: {"start":"..."} How many logs to pull start at index 0 to "..."|
+| `get_logs`| `string` | JSON: {"start":"..."} How many logs to pull start at index 0 to "..."|
 
-You can test out the following items with the included scripts in the Glimpse_testing folder.
-Note that you will need to change the internal code a bit to get the scripts running with your configuration.
+You can test out the following items with the included scripts in the Glimpse_testing folder. Note that some modification is required for the scripts to work for your glimpse install. 
 
 ## Deployment
 After following the install and setup instructions you can now configure the config files for the GlimpseServerScript and Glimpse Server.
