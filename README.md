@@ -7,8 +7,8 @@ Glimpse is a simple python based Linux server auditing platform. Built by a UMBC
 3. [Installation](#installation)
 4. [Configuration](#configuration)
 5. [Configure Firewall](#configurefirewall)
-6. [Glimpse API's](#glimpse-api's)
-7. [Deployment](#deployment)
+6. [Deployment](#deployment)
+7. [Glimpse API's](#glimpse-api's)
 8. [Authors](#authors)
 9. [Notice](#notice)
 
@@ -115,6 +115,67 @@ $ ufw allow 1443/tcp
 $ ufw allow 8443/tcp
 ```
 
+## Deployment
+After following the install and setup instructions you can now configure the config files for the GlimpseServerScript and Glimpse Server.
+### Running the Glimpse Server Script on Remote Host (linux server)
+To edit the script config you will need to edit the python code. Edit the global vars:
+
+```bash 
+$ vim GlimpseServerScript.py
+--------------------------------------------------
+| *ommited*                                      |
+| HOST_IP_ADDR = (The Local Server IP Address)   |
+| API_HOST = (The Glimpse Server IP)             |
+| API_KEY = (The API KEY)                        |
+| *ommited*                                      |
+--------------------------------------------------
+```
+
+To run the GlimpseServerScript, run the following command:
+```bash
+$ python3 GlimpseServerScript.py
+```
+
+### Running Glimpse Server (Linux Machine)
+To edit the Glimpse Server config, edit the "config.ini" file
+```bash 
+$ vim config.ini
+--------------------------------------------------
+| [MONGODB]                                      |
+| host = mongodb://localhost:27017/              |
+| database = glimpse                             |
+| document_server_info = servers_info            |
+| document_server_logs = servers_logs            |
+|                                                |
+| [SQLDB]                                        |
+| host = localhost                               |
+| user = root                                    |
+| password = Gl1MpS3%%^Sr                        |
+| database = accounts                            |
+|                                                |
+| [API]                                          |
+| debug = False                                  |
+| api_key = glimpse                              |
+| cert_file = certs/cert.pem                     |
+| key_file = certs/key.pem                       |
+--------------------------------------------------
+```
+
+To START and STOP Glimpse run the following command within the local code directory.
+```bash
+$ python3 glimpse.py
+$ screen -r
+# You Should see the following output ...
+----------------------------------------------------------------------
+|  There are screens on:                                             |
+|        *****.Data_API  (11/28/2022 08:08:55 AM)        (Detached)  |
+|        *****.User_API  (11/28/2022 08:08:55 AM)        (Detached)  |
+|  2 Sockets in /run/screen/S-unknown.                               |
+----------------------------------------------------------------------
+```
+
+### Note that you can run the GlimpseServerScript.py and the glimpse.py as Linux Services to ensure they stay running on reboot.
+
 ## Glimpse API's
 This section covers POST/GET endpoints that Glimpse opens to the network.
 ### User_API.py
@@ -193,67 +254,6 @@ The Data_API is where the Glimpse Server Script (GSS) pushes server data for bac
 | `get_logs`| `string` | JSON: {"start":"..."} How many logs to pull start at index 0 to "..."|
 
 You can test out the following items with the included scripts in the Glimpse_testing folder. Note that some modification is required for the scripts to work for your glimpse install. 
-
-## Deployment
-After following the install and setup instructions you can now configure the config files for the GlimpseServerScript and Glimpse Server.
-### Running the Glimpse Server Script on Remote Host (linux server)
-To edit the script config you will need to edit the python code. Edit the global vars:
-
-```bash 
-$ vim GlimpseServerScript.py
---------------------------------------------------
-| *ommited*                                      |
-| HOST_IP_ADDR = (The Local Server IP Address)   |
-| API_HOST = (The Glimpse Server IP)             |
-| API_KEY = (The API KEY)                        |
-| *ommited*                                      |
---------------------------------------------------
-```
-
-To run the GlimpseServerScript, run the following command:
-```bash
-$ python3 GlimpseServerScript.py
-```
-
-### Running Glimpse Server (Linux Machine)
-To edit the Glimpse Server config, edit the "config.ini" file
-```bash 
-$ vim config.ini
---------------------------------------------------
-| [MONGODB]                                      |
-| host = mongodb://localhost:27017/              |
-| database = glimpse                             |
-| document_server_info = servers_info            |
-| document_server_logs = servers_logs            |
-|                                                |
-| [SQLDB]                                        |
-| host = localhost                               |
-| user = root                                    |
-| password = Gl1MpS3%%^Sr                        |
-| database = accounts                            |
-|                                                |
-| [API]                                          |
-| debug = False                                  |
-| api_key = glimpse                              |
-| cert_file = certs/cert.pem                     |
-| key_file = certs/key.pem                       |
---------------------------------------------------
-```
-
-To START and STOP Glimpse run the following command within the local code directory.
-```bash
-$ python3 glimpse.py
-$ screen -r
-# You Should see the following output ...
-----------------------------------------------------------------------
-|  There are screens on:                                             |
-|        *****.Data_API  (11/28/2022 08:08:55 AM)        (Detached)  |
-|        *****.User_API  (11/28/2022 08:08:55 AM)        (Detached)  |
-|  2 Sockets in /run/screen/S-unknown.                               |
-----------------------------------------------------------------------
-```
-
-### Note that you can run the GlimpseServerScript.py and the glimpse.py as Linux Services to ensure they stay running on reboot.
 
 ## Authors
 - [@brandonlhill](https://www.github.com/brandonlhill) 
