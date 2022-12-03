@@ -15,7 +15,7 @@ Glimpse is a simple python based Linux server auditing platform. Built by a UMBC
 ## General Info
 This project was developed to sharpen software developement techniques. I do not recommend using software in a production environment. Furthermore, if youre just interested in learning about: flask proxy servers, flask threading, flask (cookie) based sessions, Pymongo, PySQL, etc. then this is the project for you.
 
-Note: Bug fixes, security reports, and general improvements push requests are encouraged. So please do submit push/merge requests!
+Note: Bug fixes and general improvements are encouraged. So please do submit push/merge requests!
 
 ## Technologies
 A list of technologies used within the project:
