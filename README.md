@@ -264,6 +264,9 @@ You can test out the following items with the included scripts in the Glimpse_te
 
 ## Authors
 - [@brandonlhill](https://www.github.com/brandonlhill) 
+- [@SamHouchens]
+- [RileyJackson]
+- [icarus]
 
 # Notice
 This is a school project designed to mock real developement that may occur in industry. 
