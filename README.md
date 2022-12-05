@@ -60,7 +60,7 @@ $ sudo apt install python3 python3-pip libmysqlclient-dev
 $ python3 -m pip install flask mysql-connector pymongo pyserial colorama requests bson psutil Flask-MySQLdb
 
 # Install python packages (for Glimpse Server Script on Remote HOST)
-$ python3 -m pip install shutil
+$ ...
 ```
 
 ## Configuration
