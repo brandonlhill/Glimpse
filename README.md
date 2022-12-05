@@ -57,7 +57,7 @@ $ sudo apt-get install libssl1.1
 $ sudo apt install python3 python3-pip libmysqlclient-dev
 
 # Install python packages (for Glimpse Server HOST)
-$ python3 -m pip install flask mysql-connector pymongo pyserial colorama requests shutil bson psutil Flask-MySQLdb
+$ python3 -m pip install flask mysql-connector pymongo pyserial colorama requests bson psutil Flask-MySQLdb
 
 # Install python packages (for Glimpse Server Script on Remote HOST)
 $ python3 -m pip install shutil
