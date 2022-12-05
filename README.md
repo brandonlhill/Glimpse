@@ -42,7 +42,14 @@ $ wget -qO - https://www.mongodb.org/static/pgp/server-6.0.asc | sudo apt-key ad
 $ sudo apt-get update
 
 # Install MongoDB and Mongo Shell (for config)
-$ sudo apt instlal mongodb-mongosh mongodb-ord 
+$ sudo apt instlal mongodb-mongosh mongodb-ord
+
+
+#Ubuntu 22.04 has upgraded libssl to 3 and does not propose libssl1.1
+#You can force the installation of libssl1.1 by adding the ubuntu 20.04 source:
+$ echo "deb http://security.ubuntu.com/ubuntu focal-security main" | sudo tee /etc/apt/sources.list.d/focal-security.list
+$ sudo apt-get update
+$ sudo apt-get install libssl1.1
 ``` 
 #### Install Python Packages
 ```bash 
