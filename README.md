@@ -54,7 +54,7 @@ $ sudo apt-get install libssl1.1
 #### Install Python Packages
 ```bash 
 # Python3.10 install & required dev packages
-$ sudo apt install python3 python3-pip python-pip python-dev libmysqlclient-dev
+$ sudo apt install python3 python3-pip libmysqlclient-dev
 
 # Install python packages (for Glimpse Server HOST)
 $ python3 -m pip install flask mysql-connector pymongo pyserial colorama requests shutil bson psutil Flask-MySQLdb
